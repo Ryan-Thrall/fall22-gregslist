@@ -3,25 +3,34 @@ import { carsService } from "../Services/CarsService.js"
 import { getFormData } from "../Utils/FormHandler.js"
 import { setHTML } from "../Utils/Writer.js"
 
-function drawCars() {
+function _drawCars() {
   let template = ''
+  console.log(appState.cars)
   appState.cars.forEach(car => template += car.CarCardTemplate)
   // TODO trigger bad set
   setHTML('listings', template)
 }
 
+function _showCarsButton() {
+  // @ts-ignore
+  document.getElementById('addCarButton').className = "btn btn-outline-light";
+  // @ts-ignore
+  document.getElementById('addJobButton').className = "btn btn-outline-light d-none"
+  console.log("SHOW THE BUTTON!!!")
+}
 
 export class CarsController {
   constructor() {
-    drawCars() // NOTE draw cars on page load do not do this for houses or jobs
+    _drawCars() // NOTE draw cars on page load do not do this for houses or jobs
 
     // NOTE Sets up a listener to be triggered each time a change occurs to the cars array causing the page to re-render each of the cars 
-    appState.on('cars', drawCars)
+    appState.on('cars', _drawCars)
   }
 
 
   showCars() {
-    drawCars()
+    _drawCars()
+    _showCarsButton()
   }
 
 
@@ -47,7 +56,7 @@ export class CarsController {
       let formData = getFormData(form)
 
       carsService.addCar(formData)
-      
+
       // @ts-ignore
       form.reset()
 
